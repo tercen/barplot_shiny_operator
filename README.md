@@ -1,28 +1,27 @@
-# Template Shiny operator for Tercen
+# Barplot operator
 
 ##### Description
 
-The `Template Shiny operator` is a template repository for the creation of Shiny operators in Tercen.
+The barplot operator generates a barplot image based on the input projection.
 
 ##### Usage
 
 Input projection|.
 ---|---
-`x-axis`        | type, description 
-`y-axis`        | type, description 
-`row`           | type, description 
-`column`        | type, description 
-`colors`        | type, description 
-`labels`        | type, description 
+`y-axis`        | numeric, values to be used in the y axis
+`x-axis` (optional) | numeric / factor, values to be used in the x axis
+`row` (optional) | factor, factor to be used to separate panels by rows 
+`column` (optional) | factor, factor to be used to separate panels by columns 
+`colors`        | factor, values to be used to color the bars
+
+Input parameters|.
+---|---
+`input_var`        | parameter description
 
 Output relations|.
 ---|---
-`Operator view`        | view of the Shiny application
+`Image`        | PNG of the plot in the computed tables.
 
 ##### Details
 
-Details on the computation.
-
-##### See Also
-
-[template_R_operator](https://github.com/tercen/template_R_operator)
+The computation is based on the `ggplot2` R package.
