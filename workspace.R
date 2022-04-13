@@ -17,6 +17,33 @@ getCtx <- function(session) {
 
 ui <- shinyUI(fluidPage(
   
+  sidebarPanel(
+    numericInput("plot.width", "Plot width (px)", min=200, max=2000, value=750),
+    numericInput("plot.height", "Plot height (px)", min=200, max=2000, value=750),
+    checkboxInput("jitter", "Jitter", value = FALSE),
+    selectInput(
+      "average.type",
+      "Average type",
+      c("Mean", "Median", "Count", "Proportion of total"),
+      selected = "Mean",
+      multiple = FALSE
+    ),
+    numericInput("dot.size", "Dot size", min=0.1, max=2, value=0.5),
+    selectInput(
+      "error.type",
+      "Error type",
+      c("Standard Deviation", "None"),
+      selected = "Standard Deviation",
+      multiple = FALSE
+    ),
+    numericInput("bar.width", "Bar width", min=0.1, max=2, value=0.25),
+    textInput("xlab", "x axis label", ""),
+    textInput("ylab", "y axis label", ""),
+    textInput("title", "Title", ""),
+    textInput("subtitle", "Subtitle", ""),
+    textInput("caption", "Caption", "")
+  ),
+  
   mainPanel(
     uiOutput("barplot_output")
   )
@@ -33,8 +60,8 @@ server <- shinyServer(function(input, output, session) {
     values <- dataInput()
     plotOutput(
       "main.plot",
-      width = values$input.par$plot.width,
-      height = values$input.par$plot.height
+      width = input$plot.width,
+      height = input$plot.height
     )
   }) 
   
@@ -43,7 +70,7 @@ server <- shinyServer(function(input, output, session) {
     values <- dataInput()
 
     df <- values$data
-    input.par <- values$input.par
+    input.par <- input
     
     if(input.par$average.type == "Mean") {
       df_agg <- df %>%
@@ -161,22 +188,6 @@ getValues <- function(session){
   data <- left_join(data, cnames, by = ".ci")
   
   values$data <- data
-  
-  values$input.par <- list(
-    plot.width   = ctx$op.value("plot.width", type = as.double, default = 750),
-    plot.height  = ctx$op.value("plot.height", type = as.double, default = 750),
-    jitter       = ctx$op.value("jitter", type = as.logical, default = FALSE),
-    average.type = ctx$op.value("average.type", type = as.character, default = "Count"),
-    dot.size     = ctx$op.value("dot.size", type = as.double, default = 0.5),
-    error.type   = ctx$op.value("error.type", type = as.character, default = "Standard Deviation"),
-    bar.width    = ctx$op.value("bar.width", type = as.double, default = 0.25),
-    xlab         = ctx$op.value("xlab", type = as.character, default = ""),
-    ylab         = ctx$op.value("ylab", type = as.character, default = ""),
-    title        = ctx$op.value("title", type = as.character, default = ""),
-    subtitle     = ctx$op.value("subtitle", type = as.character, default = ""),
-    caption      = ctx$op.value("caption", type = as.character, default = "")
-  )
-  
   return(values)
 }
 
