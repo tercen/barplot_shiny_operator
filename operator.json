@@ -3,7 +3,7 @@
   "description": "Displays aggregates (mean, median, count) of the input data as bar plots.",
   "tags": ["plot"],
   "authors": ["tercen"],
-  "urls": ["https://github.com/tercen/barplot_shiny_operator"]
+  "urls": ["https://github.com/tercen/barplot_shiny_operator"],
   "properties": [
   {
     "kind": "DoubleProperty",
