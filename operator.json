@@ -35,7 +35,9 @@
     "defaultValue": "Mean",
     "values": [
       "Mean",
-      "Median"
+      "Median",
+      "Count",
+      "Proportion of total"
     ],
     "description": "Indicates which average kind should be computed."
   },

@@ -59,6 +59,20 @@ server <- shinyServer(function(input, output, session) {
                   n = n(),
                   stdv = sd(.y, na.rm = TRUE))
     }
+    if(input.par$average.type == "Count") {
+      df_agg <- df %>%
+        group_by_at(vars(-.y)) %>%
+        summarise(mn = n(),
+                  n = n(),
+                  stdv = sd(.y, na.rm = TRUE))
+    }
+    if(input.par$average.type == "Proportion of total") {
+      df_agg <- df %>%
+        group_by_at(vars(-.y)) %>%
+        summarise(n = n(),
+                  stdv = sd(.y, na.rm = TRUE)) %>%
+        mutate(mn = n / sum(n))
+    }
     
     fill.col <- NULL
     if(length(values$ctx$colors) > 0) {
@@ -152,7 +166,7 @@ getValues <- function(session){
     plot.width   = ctx$op.value("plot.width", type = as.double, default = 750),
     plot.height  = ctx$op.value("plot.height", type = as.double, default = 750),
     jitter       = ctx$op.value("jitter", type = as.logical, default = FALSE),
-    average.type = ctx$op.value("average.type", type = as.character, default = "Mean"),
+    average.type = ctx$op.value("average.type", type = as.character, default = "Count"),
     dot.size     = ctx$op.value("dot.size", type = as.double, default = 0.5),
     error.type   = ctx$op.value("error.type", type = as.character, default = "Standard Deviation"),
     bar.width    = ctx$op.value("bar.width", type = as.double, default = 0.25),

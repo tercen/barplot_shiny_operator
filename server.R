@@ -56,6 +56,20 @@ shinyServer(function(input, output, session) {
                   n = n(),
                   stdv = sd(.y, na.rm = TRUE))
     }
+    if(input.par$average.type == "Count") {
+      df_agg <- df %>%
+        group_by_at(vars(-.y)) %>%
+        summarise(mn = n(),
+                  n = n(),
+                  stdv = sd(.y, na.rm = TRUE))
+    }
+    if(input.par$average.type == "Proportion of total") {
+      df_agg <- df %>%
+        group_by_at(vars(-.y)) %>%
+        summarise(n = n(),
+                  stdv = sd(.y, na.rm = TRUE)) %>%
+        mutate(mn = n / sum(n))
+    }
     
     fill.col <- NULL
     if(length(values$ctx$colors) > 0) {
