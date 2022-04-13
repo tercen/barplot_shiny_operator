@@ -28,8 +28,7 @@ shinyUI(fluidPage(
     textInput("subtitle", "Subtitle", ""),
     textInput("caption", "Caption", "")
   ),
-
-
+  
   mainPanel(
     uiOutput("barplot_output")
   )

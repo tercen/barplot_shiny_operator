@@ -72,11 +72,11 @@ shinyServer(function(input, output, session) {
     }
     
     fill.col <- NULL
-    if(length(values$ctx$colors) > 0) {
-      fill.col <- unlist(values$ctx$colors)
+    if(length(values$colors) > 0) {
+      fill.col <- unlist(values$colors)
     } 
     
-    if(!values$ctx$hasXAxis) {
+    if(!values$hasXAxis) {
       df_agg$.x <- ""
       df$.x <- ""
     } 
@@ -117,10 +117,10 @@ shinyServer(function(input, output, session) {
     ### Annotate with sample size
     
     ### Facets based on rows and columns
-    cnames <- unlist(values$ctx$cnames)
-    if(values$ctx$cnames[[1]] == "") cnames <- "."
-    rnames <- unlist(values$ctx$rnames)
-    if(values$ctx$rnames[[1]] == "") rnames <- "."
+    cnames <- unlist(values$cnames)
+    if(values$cnames[[1]] == "") cnames <- "."
+    rnames <- unlist(values$rnames)
+    if(values$rnames[[1]] == "") rnames <- "."
     
     plt <- plt + facet_grid(
       as.formula(paste(
@@ -142,7 +142,10 @@ getValues <- function(session){
   
   values <- list()
   
-  values$ctx = ctx
+  values$colors <- ctx$colors
+  values$cnames <- ctx$cnames
+  values$rnames <- ctx$rnames
+  values$hasXAxis <- ctx$hasXAxis
   
   data <- ctx %>% select(.y, .ri, .ci)
   if(ctx$hasXAxis) data$.x <- select(ctx, .x)[[".x"]]
@@ -160,4 +163,3 @@ getValues <- function(session){
   values$data <- data
   return(values)
 }
-
